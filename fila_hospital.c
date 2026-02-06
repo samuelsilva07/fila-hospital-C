@@ -3,17 +3,17 @@
 
 typedef struct Paciente {
     int idade;      // Idade do paciente
-    char cpf[12];        // CPF do cliente (apenas números)
+    char cpf[12];   // CPF do cliente (apenas números)
     char nome[101]; // Nome completo do paciente
 } PACIENTE;
 
 void visualizaFila(HEAP* fila) {
-    if (heapVazia(fila)) {
+    if (heapVazia(fila)) {      // verifica se a fila está vazia antes de iniciar a função
         printf("\nA fila esta vazia.\n\n------------------------------------\n");
         return;
     }
-    ELEMENTO* paciente;       // variável irá conter a prioridade e os dados de um paciente (no formato void*) 
-    PACIENTE* paciente_dados; // dados do cliente no formato correto (definidos no struct PACIENTE)
+    ELEMENTO* paciente;         // variável irá conter a prioridade e os dados de um paciente (no formato void*) 
+    PACIENTE* paciente_dados;   // dados do cliente no formato correto (definidos no struct PACIENTE)
     printf("\nA fila esta com %d paciente(s):\n\n", fila->quantidade);
     for (int i = 0; i < fila->quantidade; i++) {
         printf("Paciente %d: ", i + 1);
@@ -26,12 +26,12 @@ void visualizaFila(HEAP* fila) {
 }
 
 void atendePaciente(HEAP* fila) {
-    if (heapVazia(fila)){ 
+    if (heapVazia(fila)){   // verifica se a fila está vazia antes de iniciar a função
         printf("A fila esta vazia!\n\n------------------------------------\n");    
         return;
     }
-    ELEMENTO* paciente_atendido = heapRemove(fila);     // variável obtém o paciente removido, pois a função heapRemove() retorna o paciente do início da fila
-    PACIENTE* paciente_atendido_dados = ((PACIENTE*) paciente_atendido->info);
+    ELEMENTO* paciente_atendido = heapRemove(fila);     // variável obtém o paciente removido, pois a função heapRemove() retorna o paciente do início da fila - ver fila.c
+    PACIENTE* paciente_atendido_dados = (PACIENTE*) paciente_atendido->info;    // dados do paciente são convertidos de void* para PACIENTE* - dessa forma, conseguimos acessá-los em seu formato original
     printf("\n%sfoi atendido(a)!\n", paciente_atendido_dados->nome);   // imprime o nome do paciente que foi atendido
     getchar();
 }
@@ -40,6 +40,7 @@ void adicionaPaciente(HEAP* fila) {
     if (fila->quantidade < TAMANHO_MAX) {
         PACIENTE* paciente_dados = (PACIENTE*) malloc(sizeof(PACIENTE));    // aloca a memória dos dados do paciente
         getchar();
+        // coleta de dados
         printf("\nNome do paciente: ");
         fgets(paciente_dados->nome, 101, stdin);
         printf("Idade do paciente: "); 
@@ -51,7 +52,7 @@ void adicionaPaciente(HEAP* fila) {
         paciente->info = (void*) paciente_dados;    // dados do struct PACIENTE são convertidos para o tipo void* - assim, eles serão armazenados corretamente no vetor da heap
         printf("Prioridade de atendimento (3: mais urgente | 2: urgencia media | 1: pouco urgente): ");
         scanf("%d", &paciente->prioridade);
-        heapInsere(fila, paciente);
+        heapInsere(fila, paciente); // função da biblioteca heap.h
     } 
 }
 
@@ -82,7 +83,7 @@ void menu() {
                     break;
             }
         }
-        else {
+        else {  // Mensagem é exibida quando a entrada não é um número
             printf("Entrada invalida, digite um numero entre 0 a 3.\n\n------------------------------------\n");
             getchar();
         }
