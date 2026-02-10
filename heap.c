@@ -41,9 +41,15 @@ int heapCheia(HEAP* h) {    // retorna 1 se a heap estiver cheia - caso contrár
 }
 
 /*  Como o campo info é do tipo void*, a função de impressão da heap varia de acordo com a aplicação da biblioteca.
-    Para criar a função, realize os seguintes passos:
+    Antes de criar a função, realize os seguintes passos:
 
-        -
+        - defina o tipo de dado que será armazenado nos elementos (valores inteiros, strings, estruturas, entre outros);
+        - converta os dados de TODOS os elementos para o tipo void* - tipo de dado em que as informações são armazenadas no struct ELEMENTO;
+        - armazene os elementos no vetor da heap, utilizando a função heapInsere() para armazená-los um a um. (ver linha 89)
+
+    A seguir, crie uma função para imprimir o vetor, utilizando um loop for ou while - a escolha é do programador.
+    Porém, não se esqueca de CONVERTER O CAMPO INFO de cada elemento do tipo void* para o tipo de dado definido na etapa inicial!!! (linha 46)  
+    Por fim, imprima os dados normalmente. No código-fonte está um exemplo desse processo de conversão dos dados :)
 
 */
 
