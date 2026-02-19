@@ -9,7 +9,7 @@ typedef struct Paciente {
 
 void visualizaFila(HEAP* fila) {
     if (heapVazia(fila)) {      // verifica se a fila está vazia antes de iniciar a função
-        printf("\nA fila esta vazia.\n\n");
+        printf("\nA fila esta vazia!\n\n");
         return;
     }
     ELEMENTO* paciente;         // variável irá conter a prioridade e os dados de um paciente (no formato void*) 
@@ -36,25 +36,27 @@ void atendePaciente(HEAP* fila) {
 }
 
 void adicionaPaciente(HEAP* fila) {
-    if (fila->quantidade < TAMANHO_MAX) {
-        PACIENTE* paciente_dados = (PACIENTE*) malloc(sizeof(PACIENTE));    // aloca a memória dos dados do paciente
-        getchar();
+    if (heapCheia(fila)) {  // verifica se a fila não está cheia antes de realizar a função
+        printf("\nA fila esta cheia!\n\n");
+        return;
+    }
+    PACIENTE* paciente_dados = (PACIENTE*) malloc(sizeof(PACIENTE));    // aloca a memória dos dados do paciente
+    getchar();
 
-        // coleta de dados
-        printf("\nNome do paciente: ");
-        fgets(paciente_dados->nome, 101, stdin);
-        printf("Idade do paciente: "); 
-        scanf("%d", &paciente_dados->idade);
-        printf("CPF do paciente (apenas numeros): ");
-        scanf("%s", paciente_dados->cpf);
+    // coleta de dados
+    printf("\nNome do paciente: ");
+    fgets(paciente_dados->nome, 101, stdin);
+    printf("Idade do paciente: "); 
+    scanf("%d", &paciente_dados->idade);
+    printf("CPF do paciente (apenas numeros): ");
+    scanf("%s", paciente_dados->cpf);
 
-        ELEMENTO* paciente = (ELEMENTO*) malloc(sizeof(ELEMENTO));  // aloca a memória para o novo elemento da heap
-        paciente->info = (void*) paciente_dados;    // dados do struct PACIENTE são convertidos para o tipo void* - assim, eles serão armazenados corretamente no vetor da heap
-        printf("Prioridade de atendimento (3: mais urgente | 2: urgencia media | 1: pouco urgente): ");
-        scanf("%d", &paciente->prioridade);
-        heapInsere(fila, paciente); // função da biblioteca heap.c
-    } 
-    printf("A fila esta cheia!\n\n");
+    ELEMENTO* paciente = (ELEMENTO*) malloc(sizeof(ELEMENTO));  // aloca a memória para o novo elemento da heap
+    paciente->info = (void*) paciente_dados;    // dados do struct PACIENTE são convertidos para o tipo void* - assim, eles serão armazenados corretamente no vetor da heap
+    printf("Prioridade de atendimento (3: mais urgente | 2: urgencia media | 1: pouco urgente): ");
+    scanf("%d", &paciente->prioridade);
+    heapInsere(fila, paciente); // função da biblioteca heap.c
+    
 }
 
 void menu() {   // imprime a tela principal do programa
@@ -69,29 +71,28 @@ int main () {
     int operacao;
     while (1) {
         menu();
-        if (scanf("%d", &operacao)) { // condição para tratamento de exceções - se a entrada for um número, scanf retorna 1. Caso contrário, retorna 0.
-            switch (operacao) {
-                case 0:
-                    heapLibera(fila_hospital);
-                    printf("Fim do programa.\n");
-                    exit(1);
-                case 1:
-                    adicionaPaciente(fila_hospital);
-                    break;
-                case 2:
-                    atendePaciente(fila_hospital);
-                    break;
-                case 3:
-                    visualizaFila(fila_hospital);
-                    break;
-                default:
-                    printf("Entrada invalida, digite um numero entre 0 a 3.");
-                    break;
-            }
-        }
-        else {  // Mensagem é exibida quando a entrada não é um número
-            printf("Entrada invalida, digite um numero entre 0 a 3.\n\n------------------------------------");
-            getchar();
+        scanf("%d", &operacao);
+        switch (operacao) {
+            case 0:
+                heapLibera(fila_hospital);
+                printf("Fim do programa.\n");
+                exit(1);
+            case 1:
+                adicionaPaciente(fila_hospital);
+                system("cls");
+                printf("\nPaciente cadastrado com sucesso!\n");
+                break;
+            case 2:
+                system("cls");
+                atendePaciente(fila_hospital);
+                break;
+            case 3:
+                system("cls");
+                visualizaFila(fila_hospital);
+                break;
+            default:
+                printf("Entrada invalida, digite um numero entre 0 a 3.");
+                break;
         }
     }
 }

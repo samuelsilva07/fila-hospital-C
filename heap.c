@@ -37,7 +37,7 @@ int heapVazia(HEAP* h) {    // retorna 1 se a heap estiver vazia - caso contrár
 }
 
 int heapCheia(HEAP* h) {    // retorna 1 se a heap estiver cheia - caso contrário, retorna 0
-    return h->quantidade < TAMANHO_MAX;
+    return h->quantidade >= TAMANHO_MAX;
 }
 
 /*  Como o campo info é do tipo void*, a função de impressão da heap varia de acordo com a aplicação da biblioteca.
@@ -87,7 +87,7 @@ ELEMENTO* heapRemove(HEAP* h) { // retorna o elemento do topo da heap e realiza 
 }
 
 void heapInsere(HEAP* heap, ELEMENTO* elem) { // insere um elemento no vetor da heap, na posição correspondente a sua prioridade
-    if (heapCheia(heap)) { // verifica se a heap não está cheia
+    if (!heapCheia(heap)) { // verifica se a heap não está cheia
         heap->quantidade++; // quantidade de elementos da heap aumenta em uma unidade
         int k = heap->quantidade - 1;
 
