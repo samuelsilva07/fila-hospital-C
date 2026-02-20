@@ -28,7 +28,7 @@ Para utilizar o código na sua máquina, <ins>abra o terminal</ins> e siga os pa
 
 ```bash 
 $ git clone https://github.com/samuelsilva07/fila-hospital.git
-$ cd "pasta_do_arquivo" // obs: sem a extensão .c 
+$ cd "pasta_do_arquivo"  
 ```
 
 ### 2 - Após acessar a pasta do programa, compile o código com o comando gcc abaixo:
@@ -40,7 +40,7 @@ gcc fila_hospital.c -o fila_hospital
 ### 3 - A seguir, execute-o digitando:
 
 ```bash
-./"fila_hospital"
+./"fila_hospital" // obs: sem a extensão .c
 ```
 
 E pronto! O programa já estará funcionando e pronto para ser utilizado.
