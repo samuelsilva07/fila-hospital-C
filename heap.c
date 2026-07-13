@@ -3,7 +3,7 @@
 #include "heap.h"
 
 /*  
-Nesta biblioteca, uma outra abordagem de Max-Heap é utilizada:
+Nesta biblioteca, foi utilizada a seguinte abordagem para a Max-Heap é utilizada:
    
     - utilizei um struct para a heap e outra para seus elementos - que conterão mais informações dentro de sua aplicação
     - para isso, a alocação de memória para a heap é essencial - pois ela auxilia no armazenamento e manutenção do fluxo de informações.
@@ -21,6 +21,17 @@ struct Heap {
     ELEMENTO* vetor[TAMANHO_MAX];   // vetor da heap, com tamanho máximo de 127 elementos (definido no arquivo heap.h)
 };
 
+/** Como o campo info é do tipo void*, a função de impressão da heap varia de acordo com a aplicação da biblioteca.
+    Antes de criar a função, realize os seguintes passos:
+
+        - defina o tipo de dado que será armazenado nos elementos (valores inteiros, strings, estruturas, entre outros);
+        - converta os dados de TODOS os elementos para o tipo void* - tipo de dado em que as informações são armazenadas no struct ELEMENTO;
+        - armazene os elementos no vetor da heap, utilizando a função heapInsere() para armazená-los um a um. (ver linha 89)
+
+    A seguir, crie uma função para imprimir o vetor, utilizando um loop for ou while - a escolha é do programador.
+    Porém, não se esqueca de CONVERTER O CAMPO INFO de cada elemento do tipo void* para o tipo de dado definido na etapa inicial!!! (linha 46)  
+    Por fim, imprima os dados normalmente. No código-fonte está um exemplo desse processo de conversão dos dados :)
+*/  
 
 int divInt(int num1, int num2) { // retorna a divisão inteira do primeiro número pelo segundo
     return (int) num1 / num2;
@@ -40,50 +51,77 @@ int heapCheia(HEAP* h) {    // retorna 1 se a heap estiver cheia - caso contrár
     return h->quantidade >= TAMANHO_MAX;
 }
 
-/*  Como o campo info é do tipo void*, a função de impressão da heap varia de acordo com a aplicação da biblioteca.
-    Antes de criar a função, realize os seguintes passos:
+// ELEMENTO* heapRemove(HEAP* h) { // retorna o elemento do topo da heap e realiza a reordenação dos demais elementos para removê-lo da sequência
+//     if (!heapVazia(h)) {    // verifica se a heap não está vazia
+//         ELEMENTO* removido = h->vetor[0];   // elemento do topo, que será retornado ao fim da função
+//         int ultimo = h->quantidade - 1;
+//         ELEMENTO* elem = h->vetor[ultimo];  // último elemento da heap, que será reordenado no algoritmo a partir do topo
+//         int k = 0;  // posição do topo da heap
 
-        - defina o tipo de dado que será armazenado nos elementos (valores inteiros, strings, estruturas, entre outros);
-        - converta os dados de TODOS os elementos para o tipo void* - tipo de dado em que as informações são armazenadas no struct ELEMENTO;
-        - armazene os elementos no vetor da heap, utilizando a função heapInsere() para armazená-los um a um. (ver linha 89)
+//         /* 
+//         loop ocorre enquanto: 
+//             1 - o próximo elemento for menor que o tamanho da heap 
+//             2 - prioridade de elem for menor que a de seus filhos (2k+1 e 2k+2)
+//         */
+//         while ((2*k + 1 < ultimo) && (elem->prioridade < h->vetor[2*k + 1]->prioridade || elem->prioridade < h->vetor[2*k + 2]->prioridade)) {
+//             // inserção do lado esquerdo 
+//             if (h->vetor[2*k + 1]->prioridade > h->vetor[2*k + 2]->prioridade) {
+//                 h->vetor[k] = h->vetor[2*k + 1];
+//                 k = 2*k + 1;
+//             }
+//             // inserção do lado direito
+//             else {
+//                 h->vetor[k] = h->vetor[2*k + 2];
+//                 k = 2*k + 2;
+//             }
+//         }
+//         h->vetor[k] = elem; // insere elem na posição correta
+//         free(h->vetor[-1]); // libera a memória do elemento duplicado
+//         --h->quantidade;    // quantidade de elementos da heap diminui em uma unidade
+//         return removido;    // elemento removido é retornado
+//     }
+//     printf("A fila esta vazia!\n"); // imprime mensagem de erro e encerra a função
+//     return NULL;
+// }
 
-    A seguir, crie uma função para imprimir o vetor, utilizando um loop for ou while - a escolha é do programador.
-    Porém, não se esqueca de CONVERTER O CAMPO INFO de cada elemento do tipo void* para o tipo de dado definido na etapa inicial!!! (linha 46)  
-    Por fim, imprima os dados normalmente. No código-fonte está um exemplo desse processo de conversão dos dados :)
-
-*/
-
-ELEMENTO* heapRemove(HEAP* h) { // retorna o elemento do topo da heap e realiza a reordenação dos demais elementos para removê-lo da sequência
-    if (!heapVazia(h)) {    // verifica se a heap não está vazia
-        ELEMENTO* removido = h->vetor[0];   // elemento do topo, que será retornado ao fim da função
-        int ultimo = h->quantidade - 1;
-        ELEMENTO* elem = h->vetor[ultimo];  // último elemento da heap, que será reordenado no algoritmo a partir do topo
-        int k = 0;  // posição do topo da heap
-
-        /* 
-        loop ocorre enquanto: 
-            1 - o próximo elemento for menor que o tamanho da heap 
-            2 - prioridade de elem for menor que a de seus filhos (2k+1 e 2k+2)
-        */
-        while ((2*k + 1 < ultimo) && (elem->prioridade < h->vetor[2*k + 1]->prioridade || elem->prioridade < h->vetor[2*k + 2]->prioridade)) {
-            // inserção do lado esquerdo 
-            if (h->vetor[2*k + 1]->prioridade > h->vetor[2*k + 2]->prioridade) {
-                h->vetor[k] = h->vetor[2*k + 1];
-                k = 2*k + 1;
-            }
-            // inserção do lado direito
-            else {
-                h->vetor[k] = h->vetor[2*k + 2];
-                k = 2*k + 2;
-            }
-        }
-        h->vetor[k] = elem; // insere elem na posição correta
-        free(h->vetor[-1]); // libera a memória do elemento duplicado
-        --h->quantidade;    // quantidade de elementos da heap diminui em uma unidade
-        return removido;    // elemento removido é retornado
+ELEMENTO* heapRemove(HEAP* heap) { // retorna o elemento do topo da heap e realiza a reordenação dos demais elementos para removê-lo da sequência
+    if (heapVazia(heap)) {
+        printf("A heap esta vazia!");
+        return NULL;
     }
-    printf("A fila esta vazia!\n"); // imprime mensagem de erro e encerra a função
-    return NULL;
+    
+    // remoção do primeiro elemento (possui o maior índice)
+    ELEMENTO* valor = heap->vetor[heap->quantidade - 1]; // último elemento da heap
+    ELEMENTO* removido = heap->vetor[0]; // dados do paciente removido são convertidos de void* para PACIENTE* - dessa forma, conseguimos acessá-los em seu formato original
+    --heap->quantidade;
+
+    int k = 0; // começa no topo da heap (elemento que será removido)
+
+    if (heapVazia(heap)) {
+        return removido;
+    }
+
+    // enquanto não chegar no final da heap e o último elemento for menor do que os comparados, ocorre a troca de valores
+    while(2*k + 1 < heap->quantidade) {
+        int indice_esq = 2*k + 1, indice_dir = 2*k + 2;
+        int indice;
+
+        // verifica o lado da heap em que a troca deve ocorrer, com base na prioridade dos elementos filhos  
+        if (heap->vetor[indice_esq]->prioridade > heap->vetor[indice_dir]->prioridade) 
+            indice = indice_esq;
+
+        else indice = indice_dir;
+
+        // se a posição correta for encontrada, o loop se encerra
+        if (heap->vetor[indice] <= valor) break;
+
+        // elemento "desce" na heap
+        heap->vetor[k] = heap->vetor[indice];    
+
+        k = indice;
+    }
+    heap->vetor[k] = valor; // elemento é inserido na posição correta
+    return removido;
 }
 
 void heapInsere(HEAP* heap, ELEMENTO* elem) { // insere um elemento no vetor da heap, na posição correspondente a sua prioridade

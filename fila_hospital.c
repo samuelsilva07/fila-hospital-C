@@ -29,9 +29,10 @@ void atendePaciente(HEAP* fila) {
         printf("A fila esta vazia!\n\n");    
         return;
     }
+    
     ELEMENTO* paciente_atendido = heapRemove(fila);     // variável obtém o paciente removido, pois a função heapRemove() retorna o paciente do início da fila - ver fila.c
     PACIENTE* paciente_atendido_dados = (PACIENTE*) paciente_atendido->info;    // dados do paciente são convertidos de void* para PACIENTE* - dessa forma, conseguimos acessá-los em seu formato original
-    printf("\n%sfoi atendido(a)!\n", paciente_atendido_dados->nome);   // imprime o nome do paciente que foi atendido
+    printf("\n%s foi atendido(a)!\n", paciente_atendido_dados->nome);   // imprime o nome do paciente que foi atendido
     getchar();
 }
 
@@ -59,10 +60,28 @@ void adicionaPaciente(HEAP* fila) {
     
 }
 
-void menu() {   // imprime a tela principal do programa
+void menu() {  
     printf("-----------------------------------------------\n=============== HOSPITAL HEALTH ===============\n-----------------------------------------------\n");
     printf("1 - adicionar paciente | 2 - atender paciente | 3 - visualizar fila | 0 - Sair\n");
     printf("\nOperacao: ");
+}
+
+void realizarOperacao(HEAP* fila, int operacao) {
+    switch (operacao) {
+        case 1:
+            adicionaPaciente(fila);
+            printf("\nPaciente cadastrado com sucesso!\n");
+            break;
+        case 2:
+            atendePaciente(fila);
+            break;
+        case 3:
+            visualizaFila(fila);
+            break;
+        default:
+            printf("Entrada invalida, digite um numero entre 0 a 3.");
+            break;
+    }
 }
 
 int main () {
@@ -72,27 +91,13 @@ int main () {
     while (1) {
         menu();
         scanf("%d", &operacao);
-        switch (operacao) {
-            case 0:
-                heapLibera(fila_hospital);
-                printf("Fim do programa.\n");
-                exit(1);
-            case 1:
-                adicionaPaciente(fila_hospital);
-                system("cls");
-                printf("\nPaciente cadastrado com sucesso!\n");
-                break;
-            case 2:
-                system("cls");
-                atendePaciente(fila_hospital);
-                break;
-            case 3:
-                system("cls");
-                visualizaFila(fila_hospital);
-                break;
-            default:
-                printf("Entrada invalida, digite um numero entre 0 a 3.");
-                break;
+        system("cls");
+
+        if (operacao == 0) {
+            printf("Fim do programa.\n");
+            heapLibera(fila_hospital);
+            return 0;
         }
+        realizarOperacao(fila_hospital, operacao);        
     }
 }
