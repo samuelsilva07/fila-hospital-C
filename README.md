@@ -1,6 +1,6 @@
 # 🏥 Simulação de fila de hospital 
 
-#### Esse programa simula o sistema de uma hospital fictícia, que realiza o atendimento de seus pacientes baseado em seu nível de urgência.
+#### Esse programa simula o sistema de um hospital fictício, que realiza o atendimento de seus pacientes baseado em seu nível de urgência.
 
 Para isso, foram utilizados:
 <ul>
